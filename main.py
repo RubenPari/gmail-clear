@@ -1,8 +1,15 @@
-from fastapi import FastAPI
+from starlette.applications import Starlette
+from starlette.middleware import Middleware
+from starlette.middleware.sessions import SessionMiddleware
 
-app = FastAPI()
+from routes.routes import routes
 
+# Setup session
+middleware = [
+    Middleware(
+        SessionMiddleware,
+        secret_key="gfuyierafgyweiugfu<wgbfubweuy",
+    ),
+]
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+app = Starlette(routes=routes, middleware=middleware)
