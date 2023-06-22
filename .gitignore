@@ -157,3 +157,9 @@ cython_debug/
 
 # Vscode
 .vscode/
+
+# Settings
+./config/settings.py
+
+# client_secrets
+./client_secrets.json
