@@ -23,7 +23,7 @@ async def login(request: Request):
     # generate authorization_url with state
     authorization_url, state = flow.authorization_url(
         access_type="offline",
-        state="state",
+        state=state,
         include_granted_scopes="true",
     )
 
@@ -32,9 +32,17 @@ async def login(request: Request):
 
 
 async def callback(request: Request):
-    # fetch token
-    flow.fetch_token(authorization_response=str(request.url))
+    # check if state is valid
+    if request.session.get("state") != request.query_params.get("state"):
+        return {"message": "invalid state"}
 
+    # fetch token
+    try:
+        flow.fetch_token(authorization_response=str(request.url))
+    except Exception as e:
+        return {"message": "failed to fetch token", "error": str(e)}
+
+    # TODO: fix
     # save token to session
     request.session["token"] = flow.credentials.token
 
