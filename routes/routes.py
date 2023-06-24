@@ -10,4 +10,6 @@ routes = [
 
     # -------------- Email --------------
     Route("/email/{id}", endpoint=email.delete_by_id, methods=["DELETE"]),
+    Route("/email/latest/{number_of_emails}", endpoint=email.delete_latest, methods=["DELETE"]),
+    Route("/email/by-range", endpoint=email.delete_by_range, methods=["DELETE"]),
 ]
